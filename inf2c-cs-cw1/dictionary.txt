@@ -10,3 +10,5 @@ nothing
 thing
 ear
 reason
+ees
+es

@@ -48,7 +48,7 @@ const char dictionary_file_name[] = "dictionary.txt";
 const char grid_file_name[] = "1dgrid.txt";
 // content of grid file
 char grid[MAX_DIM_SIZE + 1 /* for \0 */ ];
-// content of dictionary file 
+// content of dictionary file
 char dictionary[MAX_DICTIONARY_WORDS * (MAX_WORD_SIZE + 1 /* for \n */ ) + 1 /* for \0 */ ];
 ///////////////////////////////////////////////////////////////////////////////
 /////////////// Do not modify anything above
@@ -76,6 +76,9 @@ int contain(char *string, char *word)
     if (*string != *word){
       return (*word == '\n');
     }
+    if (*string == '\n' && *word == '\n'){ //last char for word and char
+      return (*word == '\n');
+    }
 
     string++;
     word++;
@@ -90,22 +93,27 @@ void strfind()
   int idx = 0;
   int grid_idx = 0;
   char *word;
+  int word_found = 0;
   while (grid[grid_idx] != '\0') {
     for(idx = 0; idx < dict_num_words; idx ++) {
-      word = dictionary + dictionary_idx[idx]; 
+      word = dictionary + dictionary_idx[idx];
       if (contain(grid + grid_idx, word)) {
         print_int(grid_idx);
         print_char(' ');
         print_word(word);
         print_char('\n');
-        return;
+        word_found = 1;
       }
     }
 
     grid_idx++;
   }
 
-  print_string("-1\n");
+  if (word_found == 0){
+    print_string("-1\n");
+  }
+
+  return;
 }
 
 //---------------------------------------------------------------------------
@@ -161,7 +169,7 @@ int main (void)
   // closing the grid file
   fclose(grid_file);
   idx = 0;
-   
+
   // reading the dictionary file
   do {
     c_input = fgetc(dictionary_file);
@@ -179,6 +187,9 @@ int main (void)
   fclose(dictionary_file);
   //////////////////////////End of reading////////////////////////
   ///////////////You can add your code here!//////////////////////
+
+
+
 
   // storing the starting index of each word in the dictionary
   idx = 0;
